@@ -52,13 +52,8 @@
 	var ReactDOM = __webpack_require__(221);
 	var routes = __webpack_require__(222);
 	var hashHistory = ReactRouter.hashHistory;
-	var Layout = __webpack_require__(226);
 
-	ReactDOM.render(React.createElement(
-	  Router,
-	  { history: hashHistory, component: Layout },
-	  routes
-	), document.getElementById('app'));
+	ReactDOM.render(React.createElement(Router, { history: hashHistory }, routes), document.getElementById('app'));
 
 /***/ },
 /* 1 */
@@ -25715,37 +25710,17 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 
 	// Components
-	var Main = __webpack_require__(223);
-	var Games = __webpack_require__(224);
+	var Layout = __webpack_require__(223);
+	var Landing = __webpack_require__(224);
 	var Details = __webpack_require__(225);
+	var Search = __webpack_require__(227);
 
-	module.exports = React.createElement(
-	  Route,
-	  { path: '/', component: Main },
-	  React.createElement(IndexRoute, { component: Games }),
-	  React.createElement(Route, { path: 'games/:id', component: Details })
-	);
+	// Data
+	var data = __webpack_require__(228);
+	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
 
 /***/ },
 /* 223 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-/***/ },
-/* 224 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-/***/ },
-/* 225 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-/***/ },
-/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25753,21 +25728,385 @@
 	var React = __webpack_require__(1);
 
 	var Layout = function Layout(props) {
-	  return React.createElement(
-	    "div",
-	    { className: "app-container" },
-	    props.children
-	  );
+	  return React.createElement("div", { className: "app-container" }, props.children);
 	};
 
 	var element = React.PropTypes.element;
-
 
 	Layout.propTypes = {
 	  children: element
 	};
 
 	module.exports = Layout;
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	}();
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	}
+
+	function _possibleConstructorReturn(self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(158);
+
+	var hashHistory = _require.hashHistory;
+
+	var _require2 = __webpack_require__(158);
+
+	var Link = _require2.Link;
+
+	// implicit return using ( ) instead of { return (...)}
+	// note can have local variables using this syntax
+
+	// Update landing page to use redux to store state
+	// -------- Original code (Stateless)------------------
+	// const Landing = () => (
+	//   <div className="home-info">
+	//     <h1 className="title">Video App</h1>
+	//     <input className="search" type='text' placeholder='Search' />
+	//     <Link to='/search' className='browse-all' >or Browse All</Link>
+	//   </div>
+	// )
+
+	// Stateful component
+
+	var Landing = function (_React$Component) {
+	  _inherits(Landing, _React$Component);
+
+	  function Landing(props) {
+	    _classCallCheck(this, Landing);
+
+	    var _this = _possibleConstructorReturn(this, (Landing.__proto__ || Object.getPrototypeOf(Landing)).call(this, props));
+
+	    _this.state = {
+	      setSearchTerm: ''
+	    };
+	    _this.handleSearchTermEvent = _this.handleSearchTermEvent.bind(_this);
+	    _this.goToSearch = _this.goToSearch.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Landing, [{
+	    key: 'goToSearch',
+	    value: function goToSearch(event) {
+	      hashHistory.push('search');
+	      event.preventDefault();
+	    }
+	  }, {
+	    key: 'handleSearchTermEvent',
+	    value: function handleSearchTermEvent(event) {
+	      this.setState({ setSearchTerm: event.target.value });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement('div', { className: 'home-info' }, React.createElement('h1', { className: 'title' }, 'NWR Mafia Database'), React.createElement('form', { onSubmit: this.goToSearch }, React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all' }, 'or Browse All'));
+	    }
+	  }]);
+
+	  return Landing;
+	}(React.Component);
+
+	var _React$PropTypes = React.PropTypes;
+	var func = _React$PropTypes.func;
+	var string = _React$PropTypes.string;
+
+	Landing.propTypes = {
+	  setSearchTerm: func,
+	  searchTerm: string
+	};
+
+	module.exports = Landing;
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () {
+	  function defineProperties(target, props) {
+	    for (var i = 0; i < props.length; i++) {
+	      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	    }
+	  }return function (Constructor, protoProps, staticProps) {
+	    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	  };
+	}();
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	}
+
+	function _possibleConstructorReturn(self, call) {
+	  if (!self) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+	  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var React = __webpack_require__(1);
+	var Header = __webpack_require__(226);
+
+	// using es6 class
+
+	var Details = function (_React$Component) {
+	  _inherits(Details, _React$Component);
+
+	  function Details() {
+	    _classCallCheck(this, Details);
+
+	    return _possibleConstructorReturn(this, (Details.__proto__ || Object.getPrototypeOf(Details)).apply(this, arguments));
+	  }
+
+	  _createClass(Details, [{
+	    key: 'assignGame',
+	    value: function assignGame(id) {
+	      console.log(this.props.route.games);
+	      console.log(id);
+	      var gameArray = this.props.route.games.filter(function (game) {
+	        return String(game.id) === id;
+	      });
+	      return gameArray[0];
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      console.log(this.props.params);
+
+	      var _assignGame = this.assignGame(this.props.params.game_id);
+
+	      var name = _assignGame.name;
+	      var description = _assignGame.description;
+
+	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('p', { className: 'game-description' }, description)), React.createElement('div', { className: 'game-container' }));
+	    }
+	  }]);
+
+	  return Details;
+	}(React.Component);
+
+	var _React$PropTypes = React.PropTypes;
+	var arrayOf = _React$PropTypes.arrayOf;
+	var object = _React$PropTypes.object;
+
+	Details.propTypes = {
+	  params: object,
+	  route: object,
+	  games: arrayOf(object).isRequired
+	};
+	module.exports = Details;
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(158);
+
+	var Link = _require.Link;
+	var _React$PropTypes = React.PropTypes;
+	var func = _React$PropTypes.func;
+	var bool = _React$PropTypes.bool;
+	var string = _React$PropTypes.string;
+
+	var Header = React.createClass({
+	  displayName: 'Header',
+
+	  propTypes: {
+	    setSearchTerm: func,
+	    searchTerm: string,
+	    gameSearch: bool
+	  },
+	  handleSearchTermEvent: function handleSearchTermEvent(event) {
+	    this.props.setSearchTerm(event.target.value);
+	  },
+	  render: function render() {
+	    var utilSpace = void 0;
+	    if (this.props.gameSearch) {
+	      utilSpace = React.createElement('input', { value: this.props.searchTerm, type: 'text', className: 'search-input', placeholder: 'Search', onChange: this.handleSearchTermEvent });
+	    } else {
+	      utilSpace = React.createElement('h2', { className: 'header-back' }, React.createElement(Link, { to: '/search' }, 'Back'));
+	    }
+	    return React.createElement('header', { className: 'header' }, React.createElement('h1', { className: 'brand' }, React.createElement(Link, { to: '/', className: 'brand-link' }, 'NWR Mafia')), utilSpace);
+	  }
+	});
+
+	module.exports = Header;
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1);
+	var GameCard = __webpack_require__(229);
+	var Header = __webpack_require__(226);
+	// data
+
+	// being passed as props.route from ClientApp
+
+	// convert from stateless
+	// const Search = () => (
+	//   <div className='container'>
+	//     <header className="header">
+	//       <h1 className="brand">Video App</h1>
+	//       <input type="text" className="search-input" placeholder="Search" />
+	//     </header>
+	//     <div className='games'>
+	//       {data.games.map((game) => (
+	//         <GameCard {...game} key={game.id} />
+	//       ))}
+	//     </div>
+	//   </div>
+	// )
+
+	// ES6 Syntax for State Components
+	// class Search extends React.Component {
+
+	var _React$PropTypes = React.PropTypes;
+	var object = _React$PropTypes.object;
+	var string = _React$PropTypes.string;
+
+	var Search = React.createClass({
+	  displayName: 'Search',
+	  getInitialState: function getInitialState() {
+	    return {
+	      searchTerm: ''
+	    };
+	  },
+	  handleSearchTermChange: function handleSearchTermChange(searchTerm) {
+	    this.setState({ searchTerm: searchTerm });
+	  },
+
+	  propTypes: {
+	    searchTerm: string,
+	    route: object
+	  },
+	  render: function render() {
+	    var _this = this;
+
+	    console.log('this.props is ' + this.props);
+	    var games = this.props.route.games;
+	    console.log(games);
+	    return React.createElement('div', { className: 'container' }, React.createElement(Header, {
+	      handleSearchTermChange: this.handleSearchTermChange,
+	      searchTerm: this.state.searchTerm,
+	      gameSearch: true }), React.createElement('div', { className: 'games' }, games.filter(function (game) {
+	      return (game.name + ' ' + game.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
+	    }).map(function (game) {
+	      return React.createElement(GameCard, _extends({}, game, { key: game.id }));
+	    })));
+	  }
+	});
+
+	module.exports = Search;
+
+/***/ },
+/* 228 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  games: [{
+	    id: 1,
+	    name: 'Sonic \'06',
+	    description: 'Back to basics mafia game based on Sonic \'06. Four mafia members vs the town.  One doctor and one investigator role',
+	    image: 'http://orig05.deviantart.net/f6ec/f/2012/041/f/8/sonic_the_hedgehog_06_by_light_rock-d4pagxg.png',
+	    url: 'http://www.nintendoworldreport.com/forums/index.php?topic=50479.0',
+	    players: [1, 2],
+	    mafia: [1]
+	  }],
+	  players: [{
+	    id: 1,
+	    name: 'Apdude',
+	    image: 'http://vignette4.wikia.nocookie.net/sonic/images/6/67/Sonic_sonicx.png/revision/latest?cb=20090129051528'
+	  }, {
+	    id: 2,
+	    name: 'Khushrenada',
+	    image: 'http://i33.photobucket.com/albums/d95/TKush/Treize.jpg'
+	  }]
+	};
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(158);
+
+	var Link = _require.Link;
+
+	var GameCard = function GameCard(props) {
+	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
+	};
+
+	var string = React.PropTypes.string;
+
+	GameCard.propTypes = {
+	  name: string.isRequired,
+	  description: string.isRequired,
+	  image: string.isRequired
+	};
+
+	module.exports = GameCard;
 
 /***/ }
 /******/ ]);

@@ -4,10 +4,9 @@ const Router = ReactRouter.Router
 const ReactDOM = require('react-dom')
 const routes = require('./routes')
 const hashHistory = ReactRouter.hashHistory
-const Layout = require('./Layout')
 
 ReactDOM.render(
-  <Router history={hashHistory} component={Layout}>
+  <Router history={hashHistory}>
     {routes}
   </Router>,
    document.getElementById('app')
