@@ -26,8 +26,10 @@ const Header = require('./Header')
 const { object, string } = React.PropTypes
 const Search = React.createClass({
   getInitialState () {
+    console.log('params =')
+    console.log(this.props.params)
     return {
-      searchTerm: ''
+      searchTerm: this.props.params.query || ''
     }
   },
   handleSearchTermChange (searchTerm) {
@@ -35,17 +37,17 @@ const Search = React.createClass({
   },
   propTypes: {
     searchTerm: string,
-    route: object
+    route: object,
+    params: object
   },
   render () {
-    console.log('this.props is ' + this.props)
     let games = this.props.route.games
-    console.log(games)
+
     return (
       <div className='container'>
         <Header
           handleSearchTermChange={this.handleSearchTermChange}
-          searchTerm={this.state.searchTerm}
+          SearchTerm={this.state.searchTerm}
           gameSearch />
         <div className='games'>
           {games

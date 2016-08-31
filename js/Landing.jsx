@@ -26,7 +26,7 @@ class Landing extends React.Component {
     this.goToSearch = this.goToSearch.bind(this)
   }
   goToSearch (event) {
-    hashHistory.push('search')
+    hashHistory.push('search/' + this.state.setSearchTerm)
     event.preventDefault()
   }
   handleSearchTermEvent (event) {

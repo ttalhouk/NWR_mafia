@@ -13,12 +13,13 @@ const GameCard = (props) => (
   </Link>
 )
 
-const { string } = React.PropTypes
+const { string, integer } = React.PropTypes
 
 GameCard.propTypes = {
   name: string.isRequired,
   description: string.isRequired,
-  image: string.isRequired
+  image: string.isRequired,
+  id: integer
 }
 
 module.exports = GameCard

@@ -25713,11 +25713,11 @@
 	var Layout = __webpack_require__(223);
 	var Landing = __webpack_require__(224);
 	var Details = __webpack_require__(225);
-	var Search = __webpack_require__(227);
+	var Search = __webpack_require__(228);
 
 	// Data
-	var data = __webpack_require__(228);
-	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
+	var data = __webpack_require__(230);
+	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search(/:query)', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
 
 /***/ },
 /* 223 */
@@ -25819,7 +25819,7 @@
 	  _createClass(Landing, [{
 	    key: 'goToSearch',
 	    value: function goToSearch(event) {
-	      hashHistory.push('search');
+	      hashHistory.push('search/' + this.state.setSearchTerm);
 	      event.preventDefault();
 	    }
 	  }, {
@@ -25856,6 +25856,16 @@
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
 	var _createClass = function () {
 	  function defineProperties(target, props) {
 	    for (var i = 0; i < props.length; i++) {
@@ -25886,7 +25896,7 @@
 
 	var React = __webpack_require__(1);
 	var Header = __webpack_require__(226);
-
+	var PlayerCard = __webpack_require__(227);
 	// using es6 class
 
 	var Details = function (_React$Component) {
@@ -25909,6 +25919,24 @@
 	      return gameArray[0];
 	    }
 	  }, {
+	    key: 'assignPlayers',
+	    value: function assignPlayers(players) {
+	      console.log('passed in players ', players);
+	      console.log('props players ', this.props.route.players);
+	      return this.props.route.players.filter(function (player) {
+	        return players.indexOf(player.id) >= 0;
+	      }).map(function (player) {
+	        return React.createElement(PlayerCard, _extends({}, player, { key: player.id }));
+	      });
+	    }
+	  }, {
+	    key: 'rendImage',
+	    value: function rendImage(image) {
+	      if (image) {
+	        return React.createElement('img', { className: 'game-image', src: image });
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      console.log(this.props.params);
@@ -25917,22 +25945,21 @@
 
 	      var name = _assignGame.name;
 	      var description = _assignGame.description;
+	      var image = _assignGame.image;
+	      var players = _assignGame.players;
 
-	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('p', { className: 'game-description' }, description)), React.createElement('div', { className: 'game-container' }));
+	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('p', { className: 'game-description' }, description), this.rendImage(image)), React.createElement('div', { className: 'player-container' }, this.assignPlayers(players)));
 	    }
 	  }]);
 
 	  return Details;
 	}(React.Component);
 
-	var _React$PropTypes = React.PropTypes;
-	var arrayOf = _React$PropTypes.arrayOf;
-	var object = _React$PropTypes.object;
+	var object = React.PropTypes.object;
 
 	Details.propTypes = {
 	  params: object,
-	  route: object,
-	  games: arrayOf(object).isRequired
+	  route: object
 	};
 	module.exports = Details;
 
@@ -25956,12 +25983,12 @@
 	  displayName: 'Header',
 
 	  propTypes: {
-	    setSearchTerm: func,
+	    handleSearchTermChange: func,
 	    searchTerm: string,
 	    gameSearch: bool
 	  },
 	  handleSearchTermEvent: function handleSearchTermEvent(event) {
-	    this.props.setSearchTerm(event.target.value);
+	    this.props.handleSearchTermChange(event.target.value);
 	  },
 	  render: function render() {
 	    var utilSpace = void 0;
@@ -25970,7 +25997,7 @@
 	    } else {
 	      utilSpace = React.createElement('h2', { className: 'header-back' }, React.createElement(Link, { to: '/search' }, 'Back'));
 	    }
-	    return React.createElement('header', { className: 'header' }, React.createElement('h1', { className: 'brand' }, React.createElement(Link, { to: '/', className: 'brand-link' }, 'NWR Mafia')), utilSpace);
+	    return React.createElement('header', { className: 'header' }, React.createElement('h1', { className: 'brand' }, React.createElement(Link, { to: '/', className: 'brand-link' }, 'NWR Mafia Database')), utilSpace);
 	  }
 	});
 
@@ -25978,6 +26005,41 @@
 
 /***/ },
 /* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var _React$PropTypes = React.PropTypes;
+	var string = _React$PropTypes.string;
+	var integer = _React$PropTypes.integer;
+	var bool = _React$PropTypes.bool;
+
+	var PlayerCard = React.createClass({
+	  displayName: 'PlayerCard',
+	  checkMafia: function checkMafia() {
+	    if (this.props.mafia) {
+	      return 'mafia';
+	    } else {
+	      return 'townie';
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement('div', { className: 'player-card ' + this.checkMafia() }, React.createElement('img', { src: '' + this.props.image, className: 'player-card-img' }), React.createElement('div', { className: 'player-card-text' }, React.createElement('h3', { className: 'player-card-name' }, this.props.name)));
+	  },
+
+	  propTypes: {
+	    name: string.isRequired,
+	    image: string,
+	    mafia: bool,
+	    id: integer
+	  }
+	});
+
+	module.exports = PlayerCard;
+
+/***/ },
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26024,8 +26086,10 @@
 	var Search = React.createClass({
 	  displayName: 'Search',
 	  getInitialState: function getInitialState() {
+	    console.log('params =');
+	    console.log(this.props.params);
 	    return {
-	      searchTerm: ''
+	      searchTerm: this.props.params.query || ''
 	    };
 	  },
 	  handleSearchTermChange: function handleSearchTermChange(searchTerm) {
@@ -26034,17 +26098,17 @@
 
 	  propTypes: {
 	    searchTerm: string,
-	    route: object
+	    route: object,
+	    params: object
 	  },
 	  render: function render() {
 	    var _this = this;
 
-	    console.log('this.props is ' + this.props);
 	    var games = this.props.route.games;
-	    console.log(games);
+
 	    return React.createElement('div', { className: 'container' }, React.createElement(Header, {
 	      handleSearchTermChange: this.handleSearchTermChange,
-	      searchTerm: this.state.searchTerm,
+	      SearchTerm: this.state.searchTerm,
 	      gameSearch: true }), React.createElement('div', { className: 'games' }, games.filter(function (game) {
 	      return (game.name + ' ' + game.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
 	    }).map(function (game) {
@@ -26056,7 +26120,36 @@
 	module.exports = Search;
 
 /***/ },
-/* 228 */
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(158);
+
+	var Link = _require.Link;
+
+	var GameCard = function GameCard(props) {
+	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
+	};
+
+	var _React$PropTypes = React.PropTypes;
+	var string = _React$PropTypes.string;
+	var integer = _React$PropTypes.integer;
+
+	GameCard.propTypes = {
+	  name: string.isRequired,
+	  description: string.isRequired,
+	  image: string.isRequired,
+	  id: integer
+	};
+
+	module.exports = GameCard;
+
+/***/ },
+/* 230 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26081,32 +26174,6 @@
 	    image: 'http://i33.photobucket.com/albums/d95/TKush/Treize.jpg'
 	  }]
 	};
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var _require = __webpack_require__(158);
-
-	var Link = _require.Link;
-
-	var GameCard = function GameCard(props) {
-	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
-	};
-
-	var string = React.PropTypes.string;
-
-	GameCard.propTypes = {
-	  name: string.isRequired,
-	  description: string.isRequired,
-	  image: string.isRequired
-	};
-
-	module.exports = GameCard;
 
 /***/ }
 /******/ ]);
