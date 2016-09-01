@@ -36,17 +36,10 @@ const Search = React.createClass({
     }
   },
   componentWillMount () {
-    console.log('state ', this.state)
     let self = this
-    axios.get('http://127.0.0.1:3000/games', {responseType: 'json'})
+    axios.get('https://nwr-mafia-api.herokuapp.com/games', {responseType: 'json'})
       .then(function (response) {
-        console.log(response.data)
-        console.log(response.status)
-        console.log(response.statusText)
-        console.log(response.headers)
-        console.log(response.config)
         self.setState({games: response.data.games})
-        console.log(self.state.games)
       })
       .catch(function (errors) {
         console.log(errors)

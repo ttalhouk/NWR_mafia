@@ -14,7 +14,7 @@ class Details extends React.Component {
   componentWillMount () {
     let self = this
     console.log(this.props)
-    axios.get(`http://127.0.0.1:3000/games/${this.props.params.game_id}`, {responseType: 'json'})
+    axios.get(`https://nwr-mafia-api.herokuapp.com/games/${this.props.params.game_id}`, {responseType: 'json'})
       .then(function (response) {
         self.setState({
           game: response.data.game,
@@ -46,8 +46,8 @@ class Details extends React.Component {
   }
   renderDescription (description) {
     if (description) {
-      return description.split('\n').map((line) => {
-        return (<p>{line}</p>)
+      return description.split('\n').map((line, index) => {
+        return (<p key={index}>{line}</p>)
       })
     }
   }
@@ -60,7 +60,9 @@ class Details extends React.Component {
         <Header />
         <div className="game-info">
           <h1 className="game-title">{name}</h1>
-          <p className="game-description">{this.renderDescription(description)}</p>
+          <div className="game-description">
+            {this.renderDescription(description)}
+          </div>
           {this.rendImage(game_image)}
         </div>
         <div>
