@@ -2,6 +2,7 @@ const React = require('react')
 const GameCard = require('./GameCard')
 const Header = require('./Header')
 // data
+const axios = require('axios')
 
 // being passed as props.route from ClientApp
 
@@ -26,11 +27,30 @@ const Header = require('./Header')
 const { object, string } = React.PropTypes
 const Search = React.createClass({
   getInitialState () {
-    console.log('params =')
-    console.log(this.props.params)
+    // console.log('params =')
+    // console.log(this.props.params)
     return {
-      searchTerm: this.props.params.query || ''
+      searchTerm: this.props.params.query || '',
+      games: [],
+      players: []
     }
+  },
+  componentWillMount () {
+    console.log('state ', this.state)
+    let self = this
+    axios.get('http://127.0.0.1:3000/games', {responseType: 'json'})
+      .then(function (response) {
+        console.log(response.data)
+        console.log(response.status)
+        console.log(response.statusText)
+        console.log(response.headers)
+        console.log(response.config)
+        self.setState({games: response.data.games})
+        console.log(self.state.games)
+      })
+      .catch(function (errors) {
+        console.log(errors)
+      })
   },
   handleSearchTermChange (searchTerm) {
     this.setState({searchTerm: searchTerm})
@@ -41,7 +61,8 @@ const Search = React.createClass({
     params: object
   },
   render () {
-    let games = this.props.route.games
+    console.log(this.state)
+    let games = this.state.games
 
     return (
       <div className='container'>

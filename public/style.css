@@ -66,7 +66,7 @@ html {
 
 .container {
   position: absolute;
-  top: 15px;
+  top: 55px;
   left: 15px;
   right: 15px;
   bottom: 15px;
@@ -114,25 +114,33 @@ a > .game-card {
   width: 30%;
   height: 0;
   padding-bottom: 19.8%;
+  padding-right: 5%;
   overflow: hidden;
   margin: 10px;
 }
 
-.game-card-img, .player-card-img {
-  width: 46%;
+.game-card-img {
+  width: 44%;
   float: left;
+  margin-right: 2%;
+}
+.player-card-img {
+  display: block;
+  margin: 5px auto;
+  width: 50%;
 }
 .game-image {
   position: relative;
   width: 75%;
   margin: 0 auto;
 }
-
-.game-card-text, .player-card-text {
+.player-card-text {
   display: block;
-  float: right;
-  width: 52%;
+  text-align: center;
   overflow-y: scroll;
+}
+.game-card-text {
+  padding: 5px;
 }
 
 .game-card-title, .player-card-name {
@@ -208,4 +216,8 @@ a > .game-card {
   background-color: rgba(220, 220, 220, .8);
   padding: 15px 30px;
   border-radius: 5px;
+}
+
+.game-description {
+  text-align: left;
 }

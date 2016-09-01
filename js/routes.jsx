@@ -11,6 +11,7 @@ const Search = require('./Search')
 
 // Data
 const data = require('../public/data')
+
 module.exports = (
   <Route path='/' component={Layout}>
     <IndexRoute component={Landing} />

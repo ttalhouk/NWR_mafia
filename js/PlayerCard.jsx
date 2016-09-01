@@ -11,10 +11,10 @@ const PlayerCard = React.createClass({
   render () {
     return (
       <div className={`player-card ${this.checkMafia()}`} >
-        <img src={`${this.props.image}`} className='player-card-img' />
         <div className='player-card-text'>
           <h3 className='player-card-name'>{this.props.name}</h3>
         </div>
+        <img src={`${this.props.image}`} className='player-card-img' />
       </div>
     )
   },
