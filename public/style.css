@@ -106,7 +106,7 @@ a > .game-card {
 
 }
 
-.game-card, .player-card {
+.game-card{
   display: inline-block;
   border: 2px solid #333;
   border-radius: 4px;
@@ -115,6 +115,17 @@ a > .game-card {
   height: 0;
   padding-bottom: 19.8%;
   padding-right: 5%;
+  overflow: hidden;
+  margin: 10px;
+}
+.player-card {
+  display: inline-block;
+  border: 2px solid #333;
+  border-radius: 4px;
+  text-align: center;
+  width: 30%;
+  height: 0;
+  padding-bottom: 19.8%;
   overflow: hidden;
   margin: 10px;
 }

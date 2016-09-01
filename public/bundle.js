@@ -25713,10 +25713,10 @@
 	var Layout = __webpack_require__(223);
 	var Landing = __webpack_require__(224);
 	var Details = __webpack_require__(225);
-	var Search = __webpack_require__(226);
+	var Search = __webpack_require__(245);
 
 	// Data
-	var data = __webpack_require__(246);
+	var data = __webpack_require__(247);
 
 	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search(/:query)', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
 
@@ -25896,9 +25896,9 @@
 	}
 
 	var React = __webpack_require__(1);
-	var Header = __webpack_require__(228);
-	var PlayerCard = __webpack_require__(247);
-	var axios = __webpack_require__(229);
+	var Header = __webpack_require__(226);
+	var PlayerCard = __webpack_require__(227);
+	var axios = __webpack_require__(228);
 	// using es6 class
 
 	var Details = function (_React$Component) {
@@ -25921,7 +25921,7 @@
 	    value: function componentWillMount() {
 	      var self = this;
 	      console.log(this.props);
-	      axios.get('http://127.0.0.1:3000/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
+	      axios.get('https://nwr-mafia-api.herokuapp.com/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
 	        self.setState({
 	          game: response.data.game,
 	          players: response.data.players
@@ -25959,8 +25959,8 @@
 	    key: 'renderDescription',
 	    value: function renderDescription(description) {
 	      if (description) {
-	        return description.split('\n').map(function (line) {
-	          return React.createElement('p', null, line);
+	        return description.split('\n').map(function (line, index) {
+	          return React.createElement('p', { key: index }, line);
 	        });
 	      }
 	    }
@@ -25974,7 +25974,7 @@
 	      var description = _state$game.description;
 	      var game_image = _state$game.game_image;
 
-	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('p', { className: 'game-description' }, this.renderDescription(description)), this.rendImage(game_image)), React.createElement('div', null, this.assignPlayers(this.state.players)));
+	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('div', { className: 'game-description' }, this.renderDescription(description)), this.rendImage(game_image)), React.createElement('div', null, this.assignPlayers(this.state.players)));
 	    }
 	  }]);
 
@@ -25991,135 +25991,6 @@
 
 /***/ },
 /* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) {
-	  for (var i = 1; i < arguments.length; i++) {
-	    var source = arguments[i];for (var key in source) {
-	      if (Object.prototype.hasOwnProperty.call(source, key)) {
-	        target[key] = source[key];
-	      }
-	    }
-	  }return target;
-	};
-
-	var React = __webpack_require__(1);
-	var GameCard = __webpack_require__(227);
-	var Header = __webpack_require__(228);
-	// data
-	var axios = __webpack_require__(229);
-
-	// being passed as props.route from ClientApp
-
-	// convert from stateless
-	// const Search = () => (
-	//   <div className='container'>
-	//     <header className="header">
-	//       <h1 className="brand">Video App</h1>
-	//       <input type="text" className="search-input" placeholder="Search" />
-	//     </header>
-	//     <div className='games'>
-	//       {data.games.map((game) => (
-	//         <GameCard {...game} key={game.id} />
-	//       ))}
-	//     </div>
-	//   </div>
-	// )
-
-	// ES6 Syntax for State Components
-	// class Search extends React.Component {
-
-	var _React$PropTypes = React.PropTypes;
-	var object = _React$PropTypes.object;
-	var string = _React$PropTypes.string;
-
-	var Search = React.createClass({
-	  displayName: 'Search',
-	  getInitialState: function getInitialState() {
-	    // console.log('params =')
-	    // console.log(this.props.params)
-	    return {
-	      searchTerm: this.props.params.query || '',
-	      games: [],
-	      players: []
-	    };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    console.log('state ', this.state);
-	    var self = this;
-	    axios.get('http://127.0.0.1:3000/games', { responseType: 'json' }).then(function (response) {
-	      console.log(response.data);
-	      console.log(response.status);
-	      console.log(response.statusText);
-	      console.log(response.headers);
-	      console.log(response.config);
-	      self.setState({ games: response.data.games });
-	      console.log(self.state.games);
-	    }).catch(function (errors) {
-	      console.log(errors);
-	    });
-	  },
-	  handleSearchTermChange: function handleSearchTermChange(searchTerm) {
-	    this.setState({ searchTerm: searchTerm });
-	  },
-
-	  propTypes: {
-	    searchTerm: string,
-	    route: object,
-	    params: object
-	  },
-	  render: function render() {
-	    var _this = this;
-
-	    console.log(this.state);
-	    var games = this.state.games;
-
-	    return React.createElement('div', { className: 'container' }, React.createElement(Header, {
-	      handleSearchTermChange: this.handleSearchTermChange,
-	      SearchTerm: this.state.searchTerm,
-	      gameSearch: true }), React.createElement('div', { className: 'games' }, games.filter(function (game) {
-	      return (game.name + ' ' + game.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
-	    }).map(function (game) {
-	      return React.createElement(GameCard, _extends({}, game, { key: game.id }));
-	    })));
-	  }
-	});
-
-	module.exports = Search;
-
-/***/ },
-/* 227 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var _require = __webpack_require__(158);
-
-	var Link = _require.Link;
-
-	var GameCard = function GameCard(props) {
-	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.game_image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
-	};
-
-	var _React$PropTypes = React.PropTypes;
-	var string = _React$PropTypes.string;
-	var number = _React$PropTypes.number;
-
-	GameCard.propTypes = {
-	  name: string.isRequired,
-	  description: string.isRequired,
-	  game_image: string.isRequired,
-	  id: number.isRequired
-	};
-
-	module.exports = GameCard;
-
-/***/ },
-/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26159,27 +26030,69 @@
 	module.exports = Header;
 
 /***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var _React$PropTypes = React.PropTypes;
+	var string = _React$PropTypes.string;
+	var number = _React$PropTypes.number;
+	var bool = _React$PropTypes.bool;
+
+	var PlayerCard = React.createClass({
+	  displayName: 'PlayerCard',
+	  checkMafia: function checkMafia() {
+	    if (this.props.mafia) {
+	      return 'mafia';
+	    } else {
+	      return 'townie';
+	    }
+	  },
+	  renderPlayerImage: function renderPlayerImage(image) {
+	    if (image) {
+	      return image;
+	    } else {
+	      return 'http://www.wickliffemidgetfootball.com/assets/no-image-available-bbdbbe501d2b08a157a21431bc7b49df2c6cf6d892cc3083114229876cd7d6f4.jpg';
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement('div', { className: 'player-card ' + this.checkMafia() }, React.createElement('div', { className: 'player-card-text' }, React.createElement('h3', { className: 'player-card-name' }, this.props.name)), React.createElement('img', { src: this.renderPlayerImage(this.props.image), className: 'player-card-img' }));
+	  },
+
+	  propTypes: {
+	    name: string.isRequired,
+	    image: string,
+	    mafia: bool,
+	    id: number
+	  }
+	});
+
+	module.exports = PlayerCard;
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(229);
+
+/***/ },
 /* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(230);
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var defaults = __webpack_require__(231);
-	var utils = __webpack_require__(232);
-	var dispatchRequest = __webpack_require__(233);
-	var InterceptorManager = __webpack_require__(241);
-	var isAbsoluteURL = __webpack_require__(242);
-	var combineURLs = __webpack_require__(243);
-	var bind = __webpack_require__(244);
-	var transformData = __webpack_require__(237);
+	var defaults = __webpack_require__(230);
+	var utils = __webpack_require__(231);
+	var dispatchRequest = __webpack_require__(232);
+	var InterceptorManager = __webpack_require__(240);
+	var isAbsoluteURL = __webpack_require__(241);
+	var combineURLs = __webpack_require__(242);
+	var bind = __webpack_require__(243);
+	var transformData = __webpack_require__(236);
 
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -26251,7 +26164,7 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(245);
+	axios.spread = __webpack_require__(244);
 
 	// Expose interceptors
 	axios.interceptors = defaultInstance.interceptors;
@@ -26281,12 +26194,12 @@
 	});
 
 /***/ },
-/* 231 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -26349,7 +26262,7 @@
 	};
 
 /***/ },
-/* 232 */
+/* 231 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26596,7 +26509,7 @@
 	};
 
 /***/ },
-/* 233 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -26619,10 +26532,10 @@
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(234);
+	        adapter = __webpack_require__(233);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(234);
+	        adapter = __webpack_require__(233);
 	      }
 
 	      if (typeof adapter === 'function') {
@@ -26636,17 +26549,17 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 234 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
-	var buildURL = __webpack_require__(235);
-	var parseHeaders = __webpack_require__(236);
-	var transformData = __webpack_require__(237);
-	var isURLSameOrigin = __webpack_require__(238);
-	var btoa = window.btoa || __webpack_require__(239);
+	var utils = __webpack_require__(231);
+	var buildURL = __webpack_require__(234);
+	var parseHeaders = __webpack_require__(235);
+	var transformData = __webpack_require__(236);
+	var isURLSameOrigin = __webpack_require__(237);
+	var btoa = window.btoa || __webpack_require__(238);
 
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -26714,7 +26627,7 @@
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(240);
+	    var cookies = __webpack_require__(239);
 
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ? cookies.read(config.xsrfCookieName) : undefined;
@@ -26762,12 +26675,12 @@
 	};
 
 /***/ },
-/* 235 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	function encode(val) {
 	  return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
@@ -26826,12 +26739,12 @@
 	};
 
 /***/ },
-/* 236 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	/**
 	 * Parse headers into an object
@@ -26870,12 +26783,12 @@
 	};
 
 /***/ },
-/* 237 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	/**
 	 * Transform the data for a request or a response
@@ -26895,12 +26808,12 @@
 	};
 
 /***/ },
-/* 238 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -26963,7 +26876,7 @@
 	}();
 
 /***/ },
-/* 239 */
+/* 238 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27003,12 +26916,12 @@
 	module.exports = btoa;
 
 /***/ },
-/* 240 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -27061,12 +26974,12 @@
 	}();
 
 /***/ },
-/* 241 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(232);
+	var utils = __webpack_require__(231);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -27118,7 +27031,7 @@
 	module.exports = InterceptorManager;
 
 /***/ },
-/* 242 */
+/* 241 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27139,7 +27052,7 @@
 	};
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27157,7 +27070,7 @@
 	};
 
 /***/ },
-/* 244 */
+/* 243 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27173,7 +27086,7 @@
 	};
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27206,7 +27119,129 @@
 	};
 
 /***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = arguments[i];for (var key in source) {
+	      if (Object.prototype.hasOwnProperty.call(source, key)) {
+	        target[key] = source[key];
+	      }
+	    }
+	  }return target;
+	};
+
+	var React = __webpack_require__(1);
+	var GameCard = __webpack_require__(246);
+	var Header = __webpack_require__(226);
+	// data
+	var axios = __webpack_require__(228);
+
+	// being passed as props.route from ClientApp
+
+	// convert from stateless
+	// const Search = () => (
+	//   <div className='container'>
+	//     <header className="header">
+	//       <h1 className="brand">Video App</h1>
+	//       <input type="text" className="search-input" placeholder="Search" />
+	//     </header>
+	//     <div className='games'>
+	//       {data.games.map((game) => (
+	//         <GameCard {...game} key={game.id} />
+	//       ))}
+	//     </div>
+	//   </div>
+	// )
+
+	// ES6 Syntax for State Components
+	// class Search extends React.Component {
+
+	var _React$PropTypes = React.PropTypes;
+	var object = _React$PropTypes.object;
+	var string = _React$PropTypes.string;
+
+	var Search = React.createClass({
+	  displayName: 'Search',
+	  getInitialState: function getInitialState() {
+	    // console.log('params =')
+	    // console.log(this.props.params)
+	    return {
+	      searchTerm: this.props.params.query || '',
+	      games: [],
+	      players: []
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    var self = this;
+	    axios.get('https://nwr-mafia-api.herokuapp.com/games', { responseType: 'json' }).then(function (response) {
+	      self.setState({ games: response.data.games });
+	    }).catch(function (errors) {
+	      console.log(errors);
+	    });
+	  },
+	  handleSearchTermChange: function handleSearchTermChange(searchTerm) {
+	    this.setState({ searchTerm: searchTerm });
+	  },
+
+	  propTypes: {
+	    searchTerm: string,
+	    route: object,
+	    params: object
+	  },
+	  render: function render() {
+	    var _this = this;
+
+	    console.log(this.state);
+	    var games = this.state.games;
+
+	    return React.createElement('div', { className: 'container' }, React.createElement(Header, {
+	      handleSearchTermChange: this.handleSearchTermChange,
+	      SearchTerm: this.state.searchTerm,
+	      gameSearch: true }), React.createElement('div', { className: 'games' }, games.filter(function (game) {
+	      return (game.name + ' ' + game.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
+	    }).map(function (game) {
+	      return React.createElement(GameCard, _extends({}, game, { key: game.id }));
+	    })));
+	  }
+	});
+
+	module.exports = Search;
+
+/***/ },
 /* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(158);
+
+	var Link = _require.Link;
+
+	var GameCard = function GameCard(props) {
+	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.game_image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
+	};
+
+	var _React$PropTypes = React.PropTypes;
+	var string = _React$PropTypes.string;
+	var number = _React$PropTypes.number;
+
+	GameCard.propTypes = {
+	  name: string.isRequired,
+	  description: string.isRequired,
+	  game_image: string.isRequired,
+	  id: number.isRequired
+	};
+
+	module.exports = GameCard;
+
+/***/ },
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27231,41 +27266,6 @@
 	    image: 'http://i33.photobucket.com/albums/d95/TKush/Treize.jpg'
 	  }]
 	};
-
-/***/ },
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var _React$PropTypes = React.PropTypes;
-	var string = _React$PropTypes.string;
-	var integer = _React$PropTypes.integer;
-	var bool = _React$PropTypes.bool;
-
-	var PlayerCard = React.createClass({
-	  displayName: 'PlayerCard',
-	  checkMafia: function checkMafia() {
-	    if (this.props.mafia) {
-	      return 'mafia';
-	    } else {
-	      return 'townie';
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement('div', { className: 'player-card ' + this.checkMafia() }, React.createElement('div', { className: 'player-card-text' }, React.createElement('h3', { className: 'player-card-name' }, this.props.name)), React.createElement('img', { src: '' + this.props.image, className: 'player-card-img' }));
-	  },
-
-	  propTypes: {
-	    name: string.isRequired,
-	    image: string,
-	    mafia: bool,
-	    id: integer
-	  }
-	});
-
-	module.exports = PlayerCard;
 
 /***/ }
 /******/ ]);
