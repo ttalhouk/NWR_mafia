@@ -4,12 +4,12 @@ const { func, bool, string } = React.PropTypes
 
 const Header = React.createClass({
   propTypes: {
-    setSearchTerm: func,
+    handleSearchTermChange: func,
     searchTerm: string,
     gameSearch: bool
   },
   handleSearchTermEvent (event) {
-    this.props.setSearchTerm(event.target.value)
+    this.props.handleSearchTermChange(event.target.value)
   },
   render () {
     let utilSpace
@@ -28,7 +28,7 @@ const Header = React.createClass({
       <header className="header">
         <h1 className="brand">
           <Link to='/' className="brand-link">
-          NWR Mafia
+          NWR Mafia Database
           </Link>
         </h1>
         {utilSpace}

@@ -1,36 +1,78 @@
 const React = require('react')
 const Header = require('./Header')
-
+const PlayerCard = require('./PlayerCard')
+const axios = require('axios')
 // using es6 class
 class Details extends React.Component {
-
-  assignGame (id) {
-    console.log(this.props.route.games)
-    console.log(id)
-    const gameArray = this.props.route.games.filter((game) => String(game.id) === id)
-    return gameArray[0]
+  constructor (props) {
+    super(props)
+    this.state = {
+      game: {},
+      players: []
+    }
+  }
+  componentWillMount () {
+    let self = this
+    console.log(this.props)
+    axios.get(`http://127.0.0.1:3000/games/${this.props.params.game_id}`, {responseType: 'json'})
+      .then(function (response) {
+        self.setState({
+          game: response.data.game,
+          players: response.data.players
+        })
+      })
+      .catch(function (errors) {
+        console.log(errors)
+      }
+    )
+  }
+  // assignGame (id) {
+  //   console.log(id)
+  //   const gameArray = this.props.route.games.filter((game) => String(game.id) === id)
+  //   return gameArray[0]
+  // }
+  assignPlayers (players) {
+    // console.log('passed in players ', players)
+    // console.log('props players ', this.props.route.players)
+    // return this.props.route.players.filter((player) => players.indexOf(player.id) >= 0)
+    // .map((player) => (<PlayerCard {...player} key={player.id} />)
+    // )
+    return players.map((player) => (<PlayerCard {...player} key={player.id} />))
+  }
+  rendImage (image) {
+    if (image) {
+      return <img className="game-image" src={image} />
+    }
+  }
+  renderDescription (description) {
+    if (description) {
+      return description.split('\n').map((line) => {
+        return (<p>{line}</p>)
+      })
+    }
   }
   render () {
     console.log(this.props.params)
-    const { name, description } = this.assignGame(this.props.params.game_id)
+    // const { name, description, image, players } = this.assignGame(this.props.params.game_id)
+    const { name, description, game_image } = this.state.game
     return (
       <div className="container">
         <Header />
         <div className="game-info">
           <h1 className="game-title">{name}</h1>
-          <p className="game-description">{description}</p>
+          <p className="game-description">{this.renderDescription(description)}</p>
+          {this.rendImage(game_image)}
         </div>
-        <div className="game-container">
-
+        <div>
+          {this.assignPlayers(this.state.players)}
         </div>
       </div>
     )
   }
 }
-const { arrayOf, object } = React.PropTypes
+const { object } = React.PropTypes
 Details.propTypes = {
   params: object,
-  route: object,
-  games: arrayOf(object).isRequired
+  route: object
 }
 module.exports = Details
