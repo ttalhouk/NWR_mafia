@@ -4,6 +4,9 @@
   "description": "App for viewing past games and set up new games for Nintendo World Report mafia games",
   "main": "index.js",
   "scripts": {
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "prod": "NODE_ENV=production node public/server.js",
+    "postinstall": "webpack -p",
     "test": "mocha --require test/helpers/setup.js",
     "lint": "standard",
     "build": "webpack",
@@ -19,7 +22,8 @@
     "node-ensure": "0.0.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-router": "^2.0.0"
+    "react-router": "^2.0.0",
+    "webpack": "^1.12.13"
   },
   "devDependencies": {
     "babel-core": "^6.5.2",
@@ -42,8 +46,7 @@
     "mocha": "^2.4.5",
     "nyc": "^6.0.0",
     "react-addons-test-utils": "^0.14.7",
-    "sinon": "^1.17.3",
-    "webpack": "^1.12.13"
+    "sinon": "^1.17.3"
   },
   "directories": {
     "test": "test"
