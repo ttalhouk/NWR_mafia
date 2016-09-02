@@ -21,18 +21,21 @@ html {
 }
 
 .home-info {
-  background-color: rgba(220, 220, 220, .7);
+  background-color: rgba(220, 220, 220, .8);
   text-align: center;
   padding: 15px 30px;
   border-radius: 5px;
 }
 
 .title {
-  color: #B10DC9;
+  color: 	#0088CC;
+  /*color: #B10DC9;
   font-family: Skia;
-  font-weight: normal;
+  font-weight: normal;*/
 }
-
+input {
+  max-width: 90%;
+}
 .search {
   width: 100%;
   padding: 10px;

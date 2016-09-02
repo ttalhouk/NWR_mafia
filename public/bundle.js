@@ -25729,7 +25729,7 @@
 	var React = __webpack_require__(1);
 
 	var Layout = function Layout(props) {
-	  return React.createElement("div", { className: "app-container row" }, props.children);
+	  return React.createElement("div", { className: "app-container" }, props.children);
 	};
 
 	var element = React.PropTypes.element;
@@ -25831,7 +25831,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement('div', { className: 'home-info col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4' }, React.createElement('h1', { className: 'display-4' }, 'NWR Mafia Database'), React.createElement('form', { onSubmit: this.goToSearch }, React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all btn btn-primary' }, 'or Browse All'));
+	      return React.createElement('div', { className: 'home-info col-xs-10 col-md-6 col-xs-offset-1 col-md-offset-3' }, React.createElement('h1', { className: 'display-4 title' }, 'NWR Mafia Database'), React.createElement('form', { className: 'form-group', onSubmit: this.goToSearch }, React.createElement('label', { 'for': 'searchInput' }), React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all btn btn-primary' }, 'or Browse All'));
 	    }
 	  }]);
 
