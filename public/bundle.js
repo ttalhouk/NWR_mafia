@@ -25729,7 +25729,7 @@
 	var React = __webpack_require__(1);
 
 	var Layout = function Layout(props) {
-	  return React.createElement("div", { className: "app-container" }, props.children);
+	  return React.createElement("div", { className: "app-container row" }, props.children);
 	};
 
 	var element = React.PropTypes.element;
@@ -25831,7 +25831,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement('div', { className: 'home-info' }, React.createElement('h1', { className: 'title' }, 'NWR Mafia Database'), React.createElement('form', { onSubmit: this.goToSearch }, React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all' }, 'or Browse All'));
+	      return React.createElement('div', { className: 'home-info col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4' }, React.createElement('h1', { className: 'display-4' }, 'NWR Mafia Database'), React.createElement('form', { onSubmit: this.goToSearch }, React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all btn btn-primary' }, 'or Browse All'));
 	    }
 	  }]);
 
@@ -25899,6 +25899,7 @@
 	var Header = __webpack_require__(226);
 	var PlayerCard = __webpack_require__(227);
 	var axios = __webpack_require__(228);
+	var global = __webpack_require__(248);
 	// using es6 class
 
 	var Details = function (_React$Component) {
@@ -25921,7 +25922,7 @@
 	    value: function componentWillMount() {
 	      var self = this;
 	      console.log(this.props);
-	      axios.get('https://nwr-mafia-api.herokuapp.com/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
+	      axios.get(global.TEST + '/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
 	        self.setState({
 	          game: response.data.game,
 	          players: response.data.players
@@ -27139,6 +27140,7 @@
 	var Header = __webpack_require__(226);
 	// data
 	var axios = __webpack_require__(228);
+	var global = __webpack_require__(248);
 
 	// being passed as props.route from ClientApp
 
@@ -27177,7 +27179,7 @@
 	  },
 	  componentWillMount: function componentWillMount() {
 	    var self = this;
-	    axios.get('https://nwr-mafia-api.herokuapp.com/games', { responseType: 'json' }).then(function (response) {
+	    axios.get(global.TEST + '/games', { responseType: 'json' }).then(function (response) {
 	      self.setState({ games: response.data.games });
 	    }).catch(function (errors) {
 	      console.log(errors);
@@ -27265,6 +27267,17 @@
 	    name: 'Khushrenada',
 	    image: 'http://i33.photobucket.com/albums/d95/TKush/Treize.jpg'
 	  }]
+	};
+
+/***/ },
+/* 248 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  TEST: 'http://localhost:3000',
+	  API_URL: 'https://nwr-mafia-api.herokuapp.com'
 	};
 
 /***/ }

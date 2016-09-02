@@ -34,12 +34,12 @@ class Landing extends React.Component {
   }
   render () {
     return (
-      <div className="home-info">
-        <h1 className="title">NWR Mafia Database</h1>
+      <div className="home-info col-xs-6 col-md-4 col-xs-offset-3 col-md-offset-4">
+        <h1 className="display-4">NWR Mafia Database</h1>
         <form onSubmit={this.goToSearch}>
           <input value={this.state.setSearchTerm} onChange={this.handleSearchTermEvent} className="search" type='text' placeholder='Search' />
         </form>
-        <Link to='/search' className='browse-all' >or Browse All</Link>
+        <Link to='/search' className='browse-all btn btn-primary' >or Browse All</Link>
       </div>
     )
   }

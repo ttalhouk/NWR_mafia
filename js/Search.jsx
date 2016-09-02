@@ -3,6 +3,7 @@ const GameCard = require('./GameCard')
 const Header = require('./Header')
 // data
 const axios = require('axios')
+const global = require('../public/Global')
 
 // being passed as props.route from ClientApp
 
@@ -37,7 +38,7 @@ const Search = React.createClass({
   },
   componentWillMount () {
     let self = this
-    axios.get('https://nwr-mafia-api.herokuapp.com/games', {responseType: 'json'})
+    axios.get(`${global.TEST}/games`, {responseType: 'json'})
       .then(function (response) {
         self.setState({games: response.data.games})
       })

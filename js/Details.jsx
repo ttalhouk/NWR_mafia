@@ -2,6 +2,7 @@ const React = require('react')
 const Header = require('./Header')
 const PlayerCard = require('./PlayerCard')
 const axios = require('axios')
+const global = require('../public/Global')
 // using es6 class
 class Details extends React.Component {
   constructor (props) {
@@ -14,7 +15,7 @@ class Details extends React.Component {
   componentWillMount () {
     let self = this
     console.log(this.props)
-    axios.get(`https://nwr-mafia-api.herokuapp.com/games/${this.props.params.game_id}`, {responseType: 'json'})
+    axios.get(`${global.TEST}/games/${this.props.params.game_id}`, {responseType: 'json'})
       .then(function (response) {
         self.setState({
           game: response.data.game,
