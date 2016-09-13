@@ -5,26 +5,6 @@ const Header = require('./Header')
 const axios = require('axios')
 const global = require('../public/Global')
 
-// being passed as props.route from ClientApp
-
-// convert from stateless
-// const Search = () => (
-//   <div className='container'>
-//     <header className="header">
-//       <h1 className="brand">Video App</h1>
-//       <input type="text" className="search-input" placeholder="Search" />
-//     </header>
-//     <div className='games'>
-//       {data.games.map((game) => (
-//         <GameCard {...game} key={game.id} />
-//       ))}
-//     </div>
-//   </div>
-// )
-
-// ES6 Syntax for State Components
-// class Search extends React.Component {
-
 const { object, string } = React.PropTypes
 const Search = React.createClass({
   getInitialState () {
@@ -38,7 +18,7 @@ const Search = React.createClass({
   },
   componentWillMount () {
     let self = this
-    axios.get(`${global.TEST}/games`, {responseType: 'json'})
+    axios.get(`${global.API_URL}/games`, {responseType: 'json'})
       .then(function (response) {
         self.setState({games: response.data.games})
       })
