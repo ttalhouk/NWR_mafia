@@ -25713,10 +25713,10 @@
 	var Layout = __webpack_require__(223);
 	var Landing = __webpack_require__(224);
 	var Details = __webpack_require__(225);
-	var Search = __webpack_require__(245);
+	var Search = __webpack_require__(246);
 
 	// Data
-	var data = __webpack_require__(247);
+	var data = __webpack_require__(248);
 
 	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search(/:query)', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
 
@@ -25899,7 +25899,7 @@
 	var Header = __webpack_require__(226);
 	var PlayerCard = __webpack_require__(227);
 	var axios = __webpack_require__(228);
-	var global = __webpack_require__(248);
+	var global = __webpack_require__(245);
 	// using es6 class
 
 	var Details = function (_React$Component) {
@@ -27121,6 +27121,17 @@
 
 /***/ },
 /* 245 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  TEST: 'http://localhost:3000',
+	  API_URL: 'https://nwr-mafia-api.herokuapp.com'
+	};
+
+/***/ },
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27136,11 +27147,11 @@
 	};
 
 	var React = __webpack_require__(1);
-	var GameCard = __webpack_require__(246);
+	var GameCard = __webpack_require__(247);
 	var Header = __webpack_require__(226);
 	// data
 	var axios = __webpack_require__(228);
-	var global = __webpack_require__(248);
+	var global = __webpack_require__(245);
 
 	// being passed as props.route from ClientApp
 
@@ -27214,7 +27225,7 @@
 	module.exports = Search;
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27243,7 +27254,7 @@
 	module.exports = GameCard;
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27267,17 +27278,6 @@
 	    name: 'Khushrenada',
 	    image: 'http://i33.photobucket.com/albums/d95/TKush/Treize.jpg'
 	  }]
-	};
-
-/***/ },
-/* 248 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = {
-	  TEST: 'http://localhost:3000',
-	  API_URL: 'https://nwr-mafia-api.herokuapp.com'
 	};
 
 /***/ }
