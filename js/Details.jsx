@@ -15,7 +15,7 @@ class Details extends React.Component {
   componentWillMount () {
     let self = this
     console.log(this.props)
-    axios.get(`${global.TEST}/games/${this.props.params.game_id}`, {responseType: 'json'})
+    axios.get(`${global.API_URL}/games/${this.props.params.game_id}`, {responseType: 'json'})
       .then(function (response) {
         self.setState({
           game: response.data.game,
@@ -27,17 +27,8 @@ class Details extends React.Component {
       }
     )
   }
-  // assignGame (id) {
-  //   console.log(id)
-  //   const gameArray = this.props.route.games.filter((game) => String(game.id) === id)
-  //   return gameArray[0]
-  // }
+
   assignPlayers (players) {
-    // console.log('passed in players ', players)
-    // console.log('props players ', this.props.route.players)
-    // return this.props.route.players.filter((player) => players.indexOf(player.id) >= 0)
-    // .map((player) => (<PlayerCard {...player} key={player.id} />)
-    // )
     return players.map((player) => (<PlayerCard {...player} key={player.id} />))
   }
   rendImage (image) {
@@ -66,6 +57,9 @@ class Details extends React.Component {
           </div>
           {this.rendImage(game_image)}
         </div>
+        <h2 className="game-title">
+          {name} Players
+        </h2>
         <div>
           {this.assignPlayers(this.state.players)}
         </div>
