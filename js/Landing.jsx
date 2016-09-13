@@ -2,20 +2,6 @@ const React = require('react')
 const { hashHistory } = require('react-router')
 const {Link} = require('react-router')
 
-// implicit return using ( ) instead of { return (...)}
-// note can have local variables using this syntax
-
-// Update landing page to use redux to store state
-// -------- Original code (Stateless)------------------
-// const Landing = () => (
-//   <div className="home-info">
-//     <h1 className="title">Video App</h1>
-//     <input className="search" type='text' placeholder='Search' />
-//     <Link to='/search' className='browse-all' >or Browse All</Link>
-//   </div>
-// )
-
-// Stateful component
 class Landing extends React.Component {
   constructor (props) {
     super(props)
@@ -34,12 +20,13 @@ class Landing extends React.Component {
   }
   render () {
     return (
-      <div className="home-info">
-        <h1 className="title">NWR Mafia Database</h1>
-        <form onSubmit={this.goToSearch}>
+      <div className="home-info col-xs-10 col-md-6 col-xs-offset-1 col-md-offset-3">
+        <h1 className="display-4 title">NWR Mafia Database</h1>
+        <form className="form-group" onSubmit={this.goToSearch}>
+          <label htmlFor="searchInput"></label>
           <input value={this.state.setSearchTerm} onChange={this.handleSearchTermEvent} className="search" type='text' placeholder='Search' />
         </form>
-        <Link to='/search' className='browse-all' >or Browse All</Link>
+        <Link to='/search' className='browse-all btn btn-primary' >or Browse All</Link>
       </div>
     )
   }

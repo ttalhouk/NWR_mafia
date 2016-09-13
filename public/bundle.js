@@ -25713,10 +25713,10 @@
 	var Layout = __webpack_require__(223);
 	var Landing = __webpack_require__(224);
 	var Details = __webpack_require__(225);
-	var Search = __webpack_require__(245);
+	var Search = __webpack_require__(246);
 
 	// Data
-	var data = __webpack_require__(247);
+	var data = __webpack_require__(248);
 
 	module.exports = React.createElement(Route, { path: '/', component: Layout }, React.createElement(IndexRoute, { component: Landing }), React.createElement(Route, { path: '/search(/:query)', component: Search, games: data.games, players: data.players }), React.createElement(Route, { path: '/details/:game_id', component: Details, games: data.games, players: data.players }));
 
@@ -25786,21 +25786,6 @@
 
 	var Link = _require2.Link;
 
-	// implicit return using ( ) instead of { return (...)}
-	// note can have local variables using this syntax
-
-	// Update landing page to use redux to store state
-	// -------- Original code (Stateless)------------------
-	// const Landing = () => (
-	//   <div className="home-info">
-	//     <h1 className="title">Video App</h1>
-	//     <input className="search" type='text' placeholder='Search' />
-	//     <Link to='/search' className='browse-all' >or Browse All</Link>
-	//   </div>
-	// )
-
-	// Stateful component
-
 	var Landing = function (_React$Component) {
 	  _inherits(Landing, _React$Component);
 
@@ -25831,7 +25816,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement('div', { className: 'home-info' }, React.createElement('h1', { className: 'title' }, 'NWR Mafia Database'), React.createElement('form', { onSubmit: this.goToSearch }, React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all' }, 'or Browse All'));
+	      return React.createElement('div', { className: 'home-info col-xs-10 col-md-6 col-xs-offset-1 col-md-offset-3' }, React.createElement('h1', { className: 'display-4 title' }, 'NWR Mafia Database'), React.createElement('form', { className: 'form-group', onSubmit: this.goToSearch }, React.createElement('label', { htmlFor: 'searchInput' }), React.createElement('input', { value: this.state.setSearchTerm, onChange: this.handleSearchTermEvent, className: 'search', type: 'text', placeholder: 'Search' })), React.createElement(Link, { to: '/search', className: 'browse-all btn btn-primary' }, 'or Browse All'));
 	    }
 	  }]);
 
@@ -25899,6 +25884,7 @@
 	var Header = __webpack_require__(226);
 	var PlayerCard = __webpack_require__(227);
 	var axios = __webpack_require__(228);
+	var global = __webpack_require__(245);
 	// using es6 class
 
 	var Details = function (_React$Component) {
@@ -25921,7 +25907,7 @@
 	    value: function componentWillMount() {
 	      var self = this;
 	      console.log(this.props);
-	      axios.get('https://nwr-mafia-api.herokuapp.com/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
+	      axios.get(global.API_URL + '/games/' + this.props.params.game_id, { responseType: 'json' }).then(function (response) {
 	        self.setState({
 	          game: response.data.game,
 	          players: response.data.players
@@ -25930,20 +25916,9 @@
 	        console.log(errors);
 	      });
 	    }
-	    // assignGame (id) {
-	    //   console.log(id)
-	    //   const gameArray = this.props.route.games.filter((game) => String(game.id) === id)
-	    //   return gameArray[0]
-	    // }
-
 	  }, {
 	    key: 'assignPlayers',
 	    value: function assignPlayers(players) {
-	      // console.log('passed in players ', players)
-	      // console.log('props players ', this.props.route.players)
-	      // return this.props.route.players.filter((player) => players.indexOf(player.id) >= 0)
-	      // .map((player) => (<PlayerCard {...player} key={player.id} />)
-	      // )
 	      return players.map(function (player) {
 	        return React.createElement(PlayerCard, _extends({}, player, { key: player.id }));
 	      });
@@ -25974,7 +25949,7 @@
 	      var description = _state$game.description;
 	      var game_image = _state$game.game_image;
 
-	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('div', { className: 'game-description' }, this.renderDescription(description)), this.rendImage(game_image)), React.createElement('div', null, this.assignPlayers(this.state.players)));
+	      return React.createElement('div', { className: 'container' }, React.createElement(Header, null), React.createElement('div', { className: 'game-info' }, React.createElement('h1', { className: 'game-title' }, name), React.createElement('div', { className: 'game-description' }, this.renderDescription(description)), this.rendImage(game_image)), React.createElement('h2', { className: 'game-title' }, name, ' Players'), React.createElement('div', null, this.assignPlayers(this.state.players)));
 	    }
 	  }]);
 
@@ -26023,7 +25998,7 @@
 	    } else {
 	      utilSpace = React.createElement('h2', { className: 'header-back' }, React.createElement(Link, { to: '/search' }, 'Back'));
 	    }
-	    return React.createElement('header', { className: 'header' }, React.createElement('h1', { className: 'brand' }, React.createElement(Link, { to: '/', className: 'brand-link' }, 'NWR Mafia Database')), utilSpace);
+	    return React.createElement('div', { className: 'row' }, React.createElement('header', { className: 'header' }, React.createElement('h1', { className: 'brand' }, React.createElement(Link, { to: '/', className: 'brand-link' }, 'NWR Mafia Database')), utilSpace));
 	  }
 	});
 
@@ -27120,6 +27095,17 @@
 
 /***/ },
 /* 245 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
+	  TEST: 'http://localhost:3000',
+	  API_URL: 'https://nwr-mafia-api.herokuapp.com'
+	};
+
+/***/ },
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27135,30 +27121,11 @@
 	};
 
 	var React = __webpack_require__(1);
-	var GameCard = __webpack_require__(246);
+	var GameCard = __webpack_require__(247);
 	var Header = __webpack_require__(226);
 	// data
 	var axios = __webpack_require__(228);
-
-	// being passed as props.route from ClientApp
-
-	// convert from stateless
-	// const Search = () => (
-	//   <div className='container'>
-	//     <header className="header">
-	//       <h1 className="brand">Video App</h1>
-	//       <input type="text" className="search-input" placeholder="Search" />
-	//     </header>
-	//     <div className='games'>
-	//       {data.games.map((game) => (
-	//         <GameCard {...game} key={game.id} />
-	//       ))}
-	//     </div>
-	//   </div>
-	// )
-
-	// ES6 Syntax for State Components
-	// class Search extends React.Component {
+	var global = __webpack_require__(245);
 
 	var _React$PropTypes = React.PropTypes;
 	var object = _React$PropTypes.object;
@@ -27177,7 +27144,7 @@
 	  },
 	  componentWillMount: function componentWillMount() {
 	    var self = this;
-	    axios.get('https://nwr-mafia-api.herokuapp.com/games', { responseType: 'json' }).then(function (response) {
+	    axios.get(global.API_URL + '/games', { responseType: 'json' }).then(function (response) {
 	      self.setState({ games: response.data.games });
 	    }).catch(function (errors) {
 	      console.log(errors);
@@ -27212,7 +27179,7 @@
 	module.exports = Search;
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27224,7 +27191,7 @@
 	var Link = _require.Link;
 
 	var GameCard = function GameCard(props) {
-	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('img', { src: '' + props.game_image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
+	  return React.createElement(Link, { to: '/details/' + props.id }, React.createElement('div', { className: 'game-card' }, React.createElement('div', { className: 'grad-t' }), React.createElement('img', { src: '' + props.game_image, className: 'game-card-img' }), React.createElement('div', { className: 'game-card-text' }, React.createElement('h3', { className: 'game-card-title' }, props.name), React.createElement('p', { className: 'game-card-description' }, props.description))));
 	};
 
 	var _React$PropTypes = React.PropTypes;
@@ -27237,11 +27204,11 @@
 	  game_image: string.isRequired,
 	  id: number.isRequired
 	};
-
+	// <div className='well well-sm game-card col-sm-10 col-sm-offset-1 col-md-offset-0 col-md-6 col-lg-4'>
 	module.exports = GameCard;
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports) {
 
 	'use strict';
